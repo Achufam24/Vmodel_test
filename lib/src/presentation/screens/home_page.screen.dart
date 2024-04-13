@@ -57,13 +57,18 @@ class _HomeScreenState extends State<HomeScreen> {
               : blogs.blogPost != null
                   ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: ListView.builder(
-                        itemCount: blogs.blogPost!.length,
-                        itemBuilder: (context, index) {
-                          final post = blogs.blogPost![index];
-                          return BlogCard(post: post);
-                        },
-                      ),
+                    child: RefreshIndicator(
+                       onRefresh: () {
+                        return context.read<BlogViewModel>().fetchBlogPosts();
+                      },
+                      child: ListView.builder(
+                          itemCount: blogs.blogPost!.length,
+                          itemBuilder: (context, index) {
+                            final post = blogs.blogPost![index];
+                            return BlogCard(post: post);
+                          },
+                        ),
+                    ),
                   )
                   : Center(
 
